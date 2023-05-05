@@ -2,21 +2,31 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Function, InlineCode, Runtime, Code} from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
-const ecr = require('aws-cdk-lib/aws-ecr');
-const ecs = require('aws-cdk-lib/aws-ecs')
+import { DockerImageAsset, NetworkMode,Platform  } from 'aws-cdk-lib/aws-ecr-assets';
+import * as ecr from 'aws-cdk-lib/aws-ecr';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ecrdeploy from 'cdk-ecr-deployment';
 
 export class MyLambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, stageName: string, props?: cdk.StackProps) {
       super(scope, id, props);
-      const repo = ecr.Repository.fromRepositoryArn(
-        this,
-        'Servic1Repo',
-        `arn:aws:ecr:us-west-2:${props?.env?.account}:repository/service1`
-      )
-      const image = ecs.ContainerImage.fromEcrRepository(repo, 'latest')
       
-      //const repository = new ecr.Repository(this, 'Repository');
+      const image = new DockerImageAsset(this, 'MyBuildImage', {
+        directory: path.join(__dirname, 'my-image'),
+        buildArgs: {
+          HTTP_PROXY: 'http://44.213.216.241:3000',
+        },
+        invalidation: {
+          buildArgs: false,
+        },
+        networkMode: NetworkMode.HOST,
+        platform: Platform.LINUX_ARM64,
+      });
 
+      new ecrdeploy.ECRDeployment(this, 'DeployDockerImage', {
+        src: new ecrdeploy.DockerImageName(image.imageUri),
+        dest: new ecrdeploy.DockerImageName(`${cdk.Aws.ACCOUNT_ID}.dkr.ecr.us-west-2.amazonaws.com/test:nginx`),
+      });
 
       new Function(this, 'LambdaFunction', {
         runtime: Runtime.NODEJS_18_X, //using node for this, but can easily use python or other
