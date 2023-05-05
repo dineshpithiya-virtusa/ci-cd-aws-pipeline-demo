@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import { Function, InlineCode, Runtime, Code} from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
 const ecr = require('aws-cdk-lib/aws-ecr');
-const ecs = require('@aws-cdk/aws-ecs')
+const ecs = require('aws-cdk-lib/aws-ecs')
 
 export class MyLambdaStack extends cdk.Stack {
     constructor(scope: Construct, id: string, stageName: string, props?: cdk.StackProps) {
@@ -15,6 +15,9 @@ export class MyLambdaStack extends cdk.Stack {
       )
       const image = ecs.ContainerImage.fromEcrRepository(repo, 'latest')
       
+      //const repository = new ecr.Repository(this, 'Repository');
+
+
       new Function(this, 'LambdaFunction', {
         runtime: Runtime.NODEJS_18_X, //using node for this, but can easily use python or other
         handler: 'index.handler',
