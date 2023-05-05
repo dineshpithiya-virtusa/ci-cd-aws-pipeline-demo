@@ -15,9 +15,7 @@ export class MyLambdaStack extends cdk.Stack {
         directory: path.join(__dirname, 'my-image'),
         invalidation: {
           buildArgs: false,
-        },
-        networkMode: NetworkMode.HOST,
-        platform: Platform.LINUX_ARM64,
+        }
       });
 
       new ecrdeploy.ECRDeployment(this, 'DeployDockerImage', {
