@@ -13,9 +13,6 @@ export class MyLambdaStack extends cdk.Stack {
       
       const image = new DockerImageAsset(this, 'MyBuildImage', {
         directory: path.join(__dirname, 'my-image'),
-        buildArgs: {
-          HTTP_PROXY: 'http://44.213.216.241:3000',
-        },
         invalidation: {
           buildArgs: false,
         },
