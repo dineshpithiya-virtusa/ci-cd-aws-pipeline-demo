@@ -15,7 +15,7 @@ export class CiCdAwsPipelineDemoStack extends cdk.Stack {
         commands: ['npm ci', 
                    'npm run build', 
                    'npx cdk synth']
-      })
+        })
     });
 
     const testingStage = pipeline.addStage(new MyPipelineAppStage(this, "test", {
