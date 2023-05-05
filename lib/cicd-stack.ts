@@ -4,7 +4,7 @@ import { CodePipeline, CodePipelineSource, ShellStep, Step } from 'aws-cdk-lib/p
 import { ManualApprovalStep } from 'aws-cdk-lib/pipelines';
 import { MyPipelineAppStage } from './stage';
 
-export class CiCdAwsPipelineDemoStack extends cdk.Stack {
+export class CiCd extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
