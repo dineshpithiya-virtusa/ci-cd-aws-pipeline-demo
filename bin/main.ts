@@ -9,7 +9,7 @@ new CiCd(
   'CiCdAwsPipelineDemoStack', 
   {
     env: {
-      account: '505426727553',
-      region: 'us-east-1',
+      account: '####',
+      region: '####',
     }
 });

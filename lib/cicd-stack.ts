@@ -19,14 +19,14 @@ export class CiCd extends cdk.Stack {
     });
 
     const testingStage = pipeline.addStage(new MyPipelineAppStage(this, "test", {
-      env: { account: "505426727553", region: "us-east-1" }
+      env: { account: "####", region: "####" }
     }));
 
     testingStage.addPre(new ShellStep("Run Unit Tests", { commands: ['npm install', 'npm test'] }));
     testingStage.addPost(new ManualApprovalStep('Manual approval before production'));
 
     const prodStage = pipeline.addStage(new MyPipelineAppStage(this, "prod", {
-      env: { account: "505426727553", region: "us-east-1" }
+      env: { account: "####", region: "####" }
     }));
   }
 }
